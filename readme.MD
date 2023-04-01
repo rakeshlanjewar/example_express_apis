@@ -1,10 +1,13 @@
 Welcome to products apis
 
-1.
+1. Install deps
 
-
-
-1. To run the development server
 ```
 yarn
+```
+
+
+2. To run the development server
+```
+yarn dev
 ```
