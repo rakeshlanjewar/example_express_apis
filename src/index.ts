@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { config } from "./config";
 import { MongoClient } from "mongodb";
 import { AuthRouter } from "./routes/AuthRouter";
+import { ProductRouter } from "./routes/ProductRouter";
 
 const app = express();
 app.use(json());
@@ -13,10 +14,7 @@ async function main() {
   await client.connect();
 
   app.use("/auth", AuthRouter(client.db("products")));
-
-
-
-
+  app.use("/products", ProductRouter(client.db("products")));
 
   app.listen(config.PORT, () => {
     console.log(
