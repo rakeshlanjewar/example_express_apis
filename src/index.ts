@@ -1,15 +1,28 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import express, { Express, Request, Response, json } from "express";
+import "reflect-metadata";
+import { config } from "./config";
+import { MongoClient } from "mongodb";
+import { AuthRouter } from "./routes/AuthRouter";
 
-dotenv.config();
+const app = express();
+app.use(json());
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+const client = new MongoClient(config.DB_URI);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
+async function main() {
+  await client.connect();
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+  app.use("/auth", AuthRouter(client.db("products")));
+
+
+
+
+
+  app.listen(config.PORT, () => {
+    console.log(
+      `⚡️[server]: Server is running at http://localhost:${config.PORT}`
+    );
+  });
+}
+
+main();
